@@ -11,5 +11,9 @@ path = "src/nbsquare.rs"
 name = "bsquare"
 path = "src/bsquare.rs"
 
+[[bin]]
+name = "bsine"
+path = "src/bsine.rs"
+
 [dependencies]
 portaudio = "0.7.0"

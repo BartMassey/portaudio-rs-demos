@@ -1,24 +1,22 @@
 extern crate portaudio;
 
 use portaudio as pa;
+use std::f32::consts::PI;
 
-type Int = u64;
+const SAMPLE_RATE: f32 = 44_100.0;
+const FREQ: f32 = 400.0;
+const MSECS: usize = 3000;
 
-const SAMPLE_RATE: Int = 44_100;
-const FREQ: Int = 400;
-const MSECS: Int = 3000;
-
-const FRAME_SIZE: Int = 1024;
-const SAMPLES: Int = SAMPLE_RATE * MSECS / 1000;
-const FRAMES: Int = SAMPLES / FRAME_SIZE;
-const SAMPLES_PER_HALFCYCLE: Int = SAMPLE_RATE / (2 * FREQ);
+const FRAME_SIZE: usize = 1024;
+const SAMPLES: usize = SAMPLE_RATE as usize * MSECS / 1000;
+const FRAMES: usize =  SAMPLES / FRAME_SIZE;
 
 fn main() -> Result<(), pa::Error> {
-    println!("blocking square wave");
+    println!("blocking sine wave");
     println!("sample_rate: {}, msecs: {}, freq: {}",
             SAMPLE_RATE, MSECS, FREQ);
-    println!("frame_size: {}, frames: {}, halfcycle: {}",
-            FRAME_SIZE, FRAMES, SAMPLES_PER_HALFCYCLE);
+    println!("frame_size: {}, frames: {}",
+            FRAME_SIZE, FRAMES);
     println!("last frame nominal size: {}",
              FRAME_SIZE * (FRAMES + 1) - SAMPLES);
 
@@ -33,18 +31,18 @@ fn main() -> Result<(), pa::Error> {
     stream.start()?;
     
     let mut written = 0;
-    let mut cycle = 0;
-    let mut sign = 0.8;
+    let mut angle: f32 = 0.0;
     while written < SAMPLES {
         let status = stream.write(FRAME_SIZE as u32, |buffer| {
-            assert_eq!(buffer.len(), FRAME_SIZE as usize);
+            assert_eq!(buffer.len(), FRAME_SIZE);
             for i in 0..buffer.len() {
-                buffer[i] = sign;
-                cycle += 1;
-                if cycle >= SAMPLES_PER_HALFCYCLE {
-                    sign = -sign;
-                    cycle = 0;
+                buffer[i] = 0.8 * angle.sin();
+                angle +=
+                    2.0 * PI * FREQ / SAMPLE_RATE;
+                if angle >= 2.0 * PI {
+                    angle -= 2.0 * PI;
                 }
+                assert!(angle >= 0.0 && angle < 2.0 * PI);
             }
         });
         match status {
