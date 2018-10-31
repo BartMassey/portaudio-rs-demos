@@ -7,5 +7,9 @@ authors = ["Bart Massey <bart@cs.pdx.edu>"]
 name = "square"
 path = "src/square.rs"
 
+[[bin]]
+name = "bsquare"
+path = "src/bsquare.rs"
+
 [dependencies]
 portaudio = "0.7.0"

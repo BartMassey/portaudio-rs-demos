@@ -12,6 +12,7 @@ const FRAMES: usize =  SAMPLES / FRAME_SIZE as usize;
 const SAMPLES_PER_HALFCYCLE: i32 = (SAMPLE_RATE / (2 * FREQ as i32)) as i32;
 
 fn main() -> Result<(), pa::Error> {
+    println!("non-blocking square wave");
     println!("sample_rate: {}, msecs: {}, freq: {}",
             SAMPLE_RATE, MSECS, FREQ);
     println!("frame_size: {}, frames: {}, halfcycle: {}",
