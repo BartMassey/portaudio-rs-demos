@@ -22,6 +22,9 @@ a bit more Rustic.
 * `bsine.rs`: Emit a monophonic sine wave on audio
   output using the PulseAudio blocking interface.
 
+* `bwhite2.rs`: Emit stereo white noise from a wavetable on
+  audio output using the PulseAudio blocking interface.
+
 ## Note To Contributors
 
 These demos share a lot of code: they are fairly

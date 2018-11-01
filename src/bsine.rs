@@ -27,7 +27,7 @@ const MSECS: usize = 3000;
 const BUFFER_SIZE: usize = 1024;
 
 /// Total number of frames to be sent.
-const FRAMES: usize = SAMPLE_RATE as usize * MSECS / 1000;
+const FRAMES: usize = (SAMPLE_RATE * MSECS as f32 / 1000.0) as usize;
 
 /// Total number of buffers to be sent. The audio
 /// interface requires whole buffers, so this number
