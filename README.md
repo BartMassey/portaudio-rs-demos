@@ -22,6 +22,15 @@ a bit more Rustic.
 * `bsine.rs`: Emit a monophonic sine wave on audio
   output using the PulseAudio blocking interface.
 
+## Note To Contributors
+
+These demos share a lot of code: they are fairly
+copy-and-paste. This is intentional: I want the demos to be
+self-contained without going to fancy structuring that might
+obscure the function. If you make a change to one of the
+demos, please check the others to see if your change should
+also be made there.
+
 ## License
 
 This program is licensed under the "MIT License". Please see
