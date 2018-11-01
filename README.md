@@ -25,6 +25,14 @@ a bit more Rustic.
 * `bwhite2.rs`: Emit stereo white noise from a wavetable on
   audio output using the PulseAudio blocking interface.
 
+* `brecord.rs`: Read monaural audio input using the
+  PulseAudio blocking interface and write it to stdout as
+  signed 16-bit big-endian samples. On Linux, you can save
+  the output in a file named "test.s16" and play it with the
+  [SoX](http://sox.sourceforge.net) `play` command: `play -B
+  -r 44100 test.s16`.
+
+
 ## Note To Contributors
 
 These demos share a lot of code: they are fairly

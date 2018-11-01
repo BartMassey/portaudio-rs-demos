@@ -25,6 +25,11 @@ path = "src/bsine.rs"
 name = "bwhite2"
 path = "src/bwhite2.rs"
 
+[[bin]]
+name = "brecord"
+path = "src/brecord.rs"
+
 [dependencies]
 portaudio = "0.7"
-rand = "0.5.0"
+rand = "0.5"
+byteorder = "1.2"
