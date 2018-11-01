@@ -29,7 +29,12 @@ path = "src/bwhite2.rs"
 name = "brecord"
 path = "src/brecord.rs"
 
+[[bin]]
+name = "bfuzz"
+path = "src/bfuzz.rs"
+
 [dependencies]
 portaudio = "0.7"
 rand = "0.5"
 byteorder = "1.2"
+hound = "3.4"
