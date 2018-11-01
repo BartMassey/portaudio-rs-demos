@@ -3,9 +3,6 @@
 // Please see the file LICENSE in the source
 // distribution of this software for license terms.
 
-//! Emit a monophonic sine wave on audio output using the
-//! PulseAudio blocking interface.
-
 extern crate portaudio;
 
 use portaudio as pa;
