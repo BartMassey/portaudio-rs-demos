@@ -47,9 +47,9 @@ fn main() -> Result<(), pa::Error> {
     println!("blocking square wave");
     println!("sample_rate: {}, msecs: {}, freq: {}",
             SAMPLE_RATE, MSECS, FREQ);
-    println!("frame_size: {}, frames: {}, halfcycle: {}",
+    println!("buffer size: {}, buffers: {}, halfcycle: {}",
             BUFFER_SIZE, BUFFERS, FRAMES_PER_HALFCYCLE);
-    println!("last frame nominal size: {}",
+    println!("last buffer nominal size: {}",
              BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
 
     // Set up the stream.

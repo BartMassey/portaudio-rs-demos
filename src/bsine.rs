@@ -38,9 +38,9 @@ fn main() -> Result<(), pa::Error> {
     println!("blocking sine wave");
     println!("sample_rate: {}, msecs: {}, freq: {}",
             SAMPLE_RATE, MSECS, FREQ);
-    println!("frame_size: {}, frames: {}",
+    println!("buffer size: {}, buffers: {}",
             BUFFER_SIZE, BUFFERS);
-    println!("last frame nominal size: {}",
+    println!("last buffer nominal size: {}",
              BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
 
     // Set up the stream.
