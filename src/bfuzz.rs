@@ -19,6 +19,9 @@ use std::io::stdin;
 /// horribly.
 const BUFFER_SIZE: usize = 1024;
 
+/// Clip point. This is super-aggressive.
+const CLAMP_VALUE: i32 = std::i32::MAX / 16;
+
 fn main() -> Result<(), pa::Error> {
     eprintln!("read WAV file from stdin and play it fuzzed");
 
@@ -52,6 +55,13 @@ fn main() -> Result<(), pa::Error> {
                         Some(s) => s.expect("bad sample during WAV read"),
                         None => { done = true; 0 },
                     }
+                };
+                let s = if s > CLAMP_VALUE {
+                    CLAMP_VALUE
+                } else if s < -CLAMP_VALUE {
+                    -CLAMP_VALUE
+                } else {
+                    s
                 };
                 *b = s;
             }

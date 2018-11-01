@@ -32,6 +32,8 @@ a bit more Rustic.
   [SoX](http://sox.sourceforge.net) `play` command: `play -B
   -r 44100 test.s16`.
 
+* `bfuzz.rw`: Read audio input from a WAV file and play it
+   "fuzzed" using PortAudio's blocking interfaces.
 
 ## Note To Contributors
 
