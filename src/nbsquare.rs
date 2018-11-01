@@ -76,7 +76,7 @@ fn main() -> Result<(), pa::Error> {
     // Set up and start the stream.
     let pa = pa::PortAudio::new()?;
     let settings = pa.default_output_stream_settings(
-        1,
+        1,   // 1 channel
         SAMPLE_RATE as f64,
         BUFFER_SIZE as u32,
     )?;
