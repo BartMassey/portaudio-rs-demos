@@ -6,7 +6,6 @@
 //! Emit a monophonic sine wave on audio output using the
 //! PulseAudio blocking interface.
 
-extern crate portaudio;
 
 use portaudio as pa;
 use std::f32::consts::PI;

@@ -10,9 +10,6 @@
 //! [SoX](http://sox.sourceforge.net) `play` command:
 //! `play -B -r 44100 test.s16`.
 
-extern crate portaudio;
-extern crate byteorder;
-
 use portaudio as pa;
 use byteorder::{BigEndian, WriteBytesExt};
 

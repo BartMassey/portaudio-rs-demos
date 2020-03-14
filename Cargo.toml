@@ -8,6 +8,7 @@ name = "portaudio-sine"
 version = "0.1.0"
 authors = ["Bart Massey <bart@cs.pdx.edu>"]
 license = "MIT"
+edition = "2018"
 
 [[bin]]
 name = "nbsquare"

@@ -6,8 +6,6 @@
 //! Emit a stereo white noise on audio output using the
 //! PulseAudio blocking interface, via a white noise table.
 
-extern crate rand;
-extern crate portaudio;
 
 use rand::random;
 use portaudio as pa;

@@ -6,8 +6,6 @@
 //! Read audio input from a WAV file and play it "fuzzed" using
 //! PortAudio's blocking interfaces.
 
-extern crate portaudio;
-extern crate hound;
 
 use portaudio as pa;
 use hound::WavReader;

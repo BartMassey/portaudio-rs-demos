@@ -6,7 +6,6 @@
 //! Emit a monophonic square wave on audio output using the
 //! PulseAudio non-blocking interface.
 
-extern crate portaudio;
 
 use portaudio as pa;
 
