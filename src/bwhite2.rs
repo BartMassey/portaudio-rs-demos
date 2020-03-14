@@ -6,9 +6,8 @@
 //! Emit a stereo white noise on audio output using the
 //! PulseAudio blocking interface, via a white noise table.
 
-
-use rand::random;
 use portaudio as pa;
+use rand::random;
 
 /// Sample rate in frames per second.
 const SAMPLE_RATE: f32 = 44_100.0;
@@ -16,12 +15,11 @@ const SAMPLE_RATE: f32 = 44_100.0;
 /// Output time in milliseconds.
 const MSECS: usize = 3000;
 
-
 /// Two channels for stereo.
 const CHANNELS: usize = 2;
 
 /// Size of output buffer in frames. Adjust to get minimal
-/// underflow with minimal latency on your hardware. 
+/// underflow with minimal latency on your hardware.
 const BUFFER_SIZE: usize = 1;
 
 /// Size of output table in frames. This is arbitrary,
@@ -35,16 +33,16 @@ const FRAMES: usize = (SAMPLE_RATE * MSECS as f32 / 1000.0) as usize;
 /// Total number of buffers to be sent. The audio
 /// interface requires whole buffers, so this number
 /// may be one low due to truncation.
-const BUFFERS: usize =  FRAMES / BUFFER_SIZE;
+const BUFFERS: usize = FRAMES / BUFFER_SIZE;
 
 fn main() -> Result<(), pa::Error> {
     println!("blocking stereo white noise from table");
-    println!("sample_rate: {}, msecs: {}",
-            SAMPLE_RATE, MSECS);
-    println!("buffer size: {}, buffers: {}",
-            BUFFER_SIZE, BUFFERS);
-    println!("last buffer nominal size: {}",
-             BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
+    println!("sample_rate: {}, msecs: {}", SAMPLE_RATE, MSECS);
+    println!("buffer size: {}, buffers: {}", BUFFER_SIZE, BUFFERS);
+    println!(
+        "last buffer nominal size: {}",
+        BUFFER_SIZE * (BUFFERS + 1) - FRAMES
+    );
 
     // Build the white noise table.
     let table: Vec<[f32; CHANNELS]> = (0..TABLE_SIZE)
@@ -66,7 +64,7 @@ fn main() -> Result<(), pa::Error> {
     )?;
     let mut stream = pa.open_blocking_stream(settings)?;
     stream.start()?;
-    
+
     // State for the table reader.
     let mut entry = 0;
 
@@ -98,10 +96,10 @@ fn main() -> Result<(), pa::Error> {
             Err(pa::Error::OutputUnderflowed) => {
                 eprintln!("underflow: written = {}", written);
                 advance_state(&mut entry, BUFFER_SIZE);
-            },
+            }
             _ => {
                 status?;
-            },
+            }
         }
 
         // Advance to next buffer.

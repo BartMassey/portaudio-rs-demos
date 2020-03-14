@@ -6,7 +6,6 @@
 //! Emit a monophonic square wave on audio output using the
 //! PulseAudio non-blocking interface.
 
-
 use portaudio as pa;
 
 /// Type used for generic integers. `u32` would also
@@ -21,7 +20,6 @@ const FREQ: Int = 400;
 
 /// Output time in milliseconds.
 const MSECS: Int = 3000;
-
 
 /// Size of output buffer in frames. Less than 1024 is not
 /// recommended, as most audio interfaces will choke
@@ -44,12 +42,18 @@ const FRAMES_PER_HALFCYCLE: Int = SAMPLE_RATE / (2 * FREQ);
 
 fn main() -> Result<(), pa::Error> {
     println!("non-blocking square wave");
-    println!("sample_rate: {}, msecs: {}, freq: {}",
-            SAMPLE_RATE, MSECS, FREQ);
-    println!("buffer size: {}, buffers: {}, halfcycle: {}",
-            BUFFER_SIZE, BUFFERS, FRAMES_PER_HALFCYCLE);
-    println!("last buffer nominal size: {}",
-             BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
+    println!(
+        "sample_rate: {}, msecs: {}, freq: {}",
+        SAMPLE_RATE, MSECS, FREQ
+    );
+    println!(
+        "buffer size: {}, buffers: {}, halfcycle: {}",
+        BUFFER_SIZE, BUFFERS, FRAMES_PER_HALFCYCLE
+    );
+    println!(
+        "last buffer nominal size: {}",
+        BUFFER_SIZE * (BUFFERS + 1) - FRAMES
+    );
 
     // Persistent callback state.
     let mut cycle = 0;
@@ -59,23 +63,26 @@ fn main() -> Result<(), pa::Error> {
     // clear to me what happens on underflow here, so I have
     // just assumed it doesn't happen. This may cause
     // underflow glitches.
-    let callback = move |pa::OutputStreamCallbackArgs {buffer, frames, ..}| {
-        assert_eq!(frames, BUFFER_SIZE as usize);
-        for sample in buffer.iter_mut().take(frames) {
-            *sample = sign;
-            cycle += 1;
-            if cycle >= FRAMES_PER_HALFCYCLE {
-                sign = -sign;
-                cycle = 0;
+    let callback =
+        move |pa::OutputStreamCallbackArgs {
+                  buffer, frames, ..
+              }| {
+            assert_eq!(frames, BUFFER_SIZE as usize);
+            for sample in buffer.iter_mut().take(frames) {
+                *sample = sign;
+                cycle += 1;
+                if cycle >= FRAMES_PER_HALFCYCLE {
+                    sign = -sign;
+                    cycle = 0;
+                }
             }
-        }
-        pa::Continue
-    };
-    
+            pa::Continue
+        };
+
     // Set up and start the stream.
     let pa = pa::PortAudio::new()?;
     let settings = pa.default_output_stream_settings(
-        1,   // 1 channel
+        1, // 1 channel
         SAMPLE_RATE as f64,
         BUFFER_SIZE as u32,
     )?;

@@ -6,7 +6,6 @@
 //! Emit a monophonic sine wave on audio output using the
 //! PulseAudio blocking interface.
 
-
 use portaudio as pa;
 use std::f32::consts::PI;
 
@@ -19,7 +18,6 @@ const FREQ: f32 = 400.0;
 /// Output time in milliseconds.
 const MSECS: usize = 3000;
 
-
 /// Size of output buffer in frames. Less than 1024 is not
 /// recommended, as most audio interfaces will choke
 /// horribly.
@@ -31,27 +29,30 @@ const FRAMES: usize = (SAMPLE_RATE * MSECS as f32 / 1000.0) as usize;
 /// Total number of buffers to be sent. The audio
 /// interface requires whole buffers, so this number
 /// may be one low due to truncation.
-const BUFFERS: usize =  FRAMES / BUFFER_SIZE;
+const BUFFERS: usize = FRAMES / BUFFER_SIZE;
 
 fn main() -> Result<(), pa::Error> {
     println!("blocking sine wave");
-    println!("sample_rate: {}, msecs: {}, freq: {}",
-            SAMPLE_RATE, MSECS, FREQ);
-    println!("buffer size: {}, buffers: {}",
-            BUFFER_SIZE, BUFFERS);
-    println!("last buffer nominal size: {}",
-             BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
+    println!(
+        "sample_rate: {}, msecs: {}, freq: {}",
+        SAMPLE_RATE, MSECS, FREQ
+    );
+    println!("buffer size: {}, buffers: {}", BUFFER_SIZE, BUFFERS);
+    println!(
+        "last buffer nominal size: {}",
+        BUFFER_SIZE * (BUFFERS + 1) - FRAMES
+    );
 
     // Set up the stream.
     let pa = pa::PortAudio::new()?;
     let settings = pa.default_output_stream_settings(
-        1,   // 1 channel
+        1, // 1 channel
         SAMPLE_RATE as f64,
         BUFFER_SIZE as u32,
     )?;
     let mut stream = pa.open_blocking_stream(settings)?;
     stream.start()?;
-    
+
     // State for the sine generator.
     let mut angle: f32 = 0.0;
 
@@ -82,10 +83,10 @@ fn main() -> Result<(), pa::Error> {
             Err(pa::Error::OutputUnderflowed) => {
                 eprintln!("underflow: written = {}", written);
                 advance_state(&mut angle, BUFFER_SIZE);
-            },
+            }
             _ => {
                 status?;
-            },
+            }
         }
 
         // Advance to next buffer.

@@ -6,7 +6,6 @@
 //! Emit a monophonic square wave on audio output using the
 //! PulseAudio blocking interface.
 
-
 use portaudio as pa;
 
 /// Type used for generic integers. `u32` would also
@@ -21,7 +20,6 @@ const FREQ: Int = 400;
 
 /// Output time in milliseconds.
 const MSECS: Int = 3000;
-
 
 /// Size of output buffer in frames. Less than 1024 is not
 /// recommended, as most audio interfaces will choke
@@ -44,23 +42,29 @@ const FRAMES_PER_HALFCYCLE: usize = (SAMPLE_RATE / (2 * FREQ)) as usize;
 
 fn main() -> Result<(), pa::Error> {
     println!("blocking square wave");
-    println!("sample_rate: {}, msecs: {}, freq: {}",
-            SAMPLE_RATE, MSECS, FREQ);
-    println!("buffer size: {}, buffers: {}, halfcycle: {}",
-            BUFFER_SIZE, BUFFERS, FRAMES_PER_HALFCYCLE);
-    println!("last buffer nominal size: {}",
-             BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
+    println!(
+        "sample_rate: {}, msecs: {}, freq: {}",
+        SAMPLE_RATE, MSECS, FREQ
+    );
+    println!(
+        "buffer size: {}, buffers: {}, halfcycle: {}",
+        BUFFER_SIZE, BUFFERS, FRAMES_PER_HALFCYCLE
+    );
+    println!(
+        "last buffer nominal size: {}",
+        BUFFER_SIZE * (BUFFERS + 1) - FRAMES
+    );
 
     // Set up the stream.
     let pa = pa::PortAudio::new()?;
     let settings = pa.default_output_stream_settings(
-        1,   // 1 channel
+        1, // 1 channel
         SAMPLE_RATE as f64,
         BUFFER_SIZE as u32,
     )?;
     let mut stream = pa.open_blocking_stream(settings)?;
     stream.start()?;
-    
+
     // State for the square generator.
     let mut cycle = 0;
     let mut sign = 0.8;
@@ -92,8 +96,10 @@ fn main() -> Result<(), pa::Error> {
             Err(pa::Error::OutputUnderflowed) => {
                 eprintln!("underflow: written = {}", written);
                 advance_state(&mut cycle, &mut sign, BUFFER_SIZE);
-            },
-            _ => {status?;},
+            }
+            _ => {
+                status?;
+            }
         }
 
         // Advance to next buffer.

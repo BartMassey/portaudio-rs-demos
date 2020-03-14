@@ -10,8 +10,8 @@
 //! [SoX](http://sox.sourceforge.net) `play` command:
 //! `play -B -r 44100 test.s16`.
 
-use portaudio as pa;
 use byteorder::{BigEndian, WriteBytesExt};
+use portaudio as pa;
 
 use std::io::stdout;
 
@@ -32,34 +32,33 @@ const FRAMES: usize = (SAMPLE_RATE * MSECS as f32 / 1000.0) as usize;
 /// Total number of buffers to be received. The audio
 /// interface requires whole buffers, so this number
 /// may be one low due to truncation.
-const BUFFERS: usize =  FRAMES / BUFFER_SIZE;
+const BUFFERS: usize = FRAMES / BUFFER_SIZE;
 
 fn main() -> Result<(), pa::Error> {
     eprintln!("read audio input and write to stdout");
-    eprintln!("sample_rate: {}, msecs: {}",
-              SAMPLE_RATE, MSECS);
-    eprintln!("buffer size: {}, buffers: {}",
-              BUFFER_SIZE, BUFFERS);
-    eprintln!("last buffer nominal size: {}",
-              BUFFER_SIZE * (BUFFERS + 1) - FRAMES);
+    eprintln!("sample_rate: {}, msecs: {}", SAMPLE_RATE, MSECS);
+    eprintln!("buffer size: {}, buffers: {}", BUFFER_SIZE, BUFFERS);
+    eprintln!(
+        "last buffer nominal size: {}",
+        BUFFER_SIZE * (BUFFERS + 1) - FRAMES
+    );
 
     // Set up the stream.
     let pa = pa::PortAudio::new()?;
     let settings = pa.default_input_stream_settings(
-        1,   // 1 channel
+        1, // 1 channel
         SAMPLE_RATE as f64,
         BUFFER_SIZE as u32,
     )?;
     let mut stream = pa.open_blocking_stream(settings)?;
     stream.start()?;
-    
+
     // Get a handle to the output.
     let mut stdout = stdout();
 
     // Read all the frames.
     let mut read = 0;
     while read < FRAMES {
-
         // On overflow, do not panic, but fill with zeros
         // and skip ahead to the next buffer. This may not
         // be quite right, but is as good as we can do.
@@ -67,20 +66,22 @@ fn main() -> Result<(), pa::Error> {
             Ok(buffer) => {
                 assert_eq!(buffer.len(), BUFFER_SIZE);
                 for &b in buffer {
-                    stdout.write_i16::<BigEndian>(b)
+                    stdout
+                        .write_i16::<BigEndian>(b)
                         .expect("bad write of audio buffer");
                 }
-            },
+            }
             Err(pa::Error::InputOverflowed) => {
                 eprintln!("overflow: read = {}", read);
                 for &b in [0; BUFFER_SIZE].iter() {
-                    stdout.write_i16::<BigEndian>(b)
+                    stdout
+                        .write_i16::<BigEndian>(b)
                         .expect("bad write of zeros");
                 }
-            },
+            }
             status => {
                 status?;
-            },
+            }
         }
 
         // Advance to next buffer.
