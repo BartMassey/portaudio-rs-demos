@@ -61,8 +61,8 @@ fn main() -> Result<(), pa::Error> {
     // underflow glitches.
     let callback = move |pa::OutputStreamCallbackArgs {buffer, frames, ..}| {
         assert_eq!(frames, BUFFER_SIZE as usize);
-        for i in 0..frames {
-            buffer[i] = sign;
+        for sample in buffer.iter_mut().take(frames) {
+            *sample = sign;
             cycle += 1;
             if cycle >= FRAMES_PER_HALFCYCLE {
                 sign = -sign;

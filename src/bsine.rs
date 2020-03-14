@@ -69,8 +69,8 @@ fn main() -> Result<(), pa::Error> {
     while written < FRAMES {
         let status = stream.write(BUFFER_SIZE as u32, |buffer| {
             assert_eq!(buffer.len(), BUFFER_SIZE);
-            for i in 0..buffer.len() {
-                buffer[i] = 0.8 * angle.sin();
+            for sample in buffer.iter_mut() {
+                *sample = 0.8 * angle.sin();
                 advance_state(&mut angle, 1);
             }
         });

@@ -79,8 +79,8 @@ fn main() -> Result<(), pa::Error> {
     while written < FRAMES {
         let status = stream.write(BUFFER_SIZE as u32, |buffer| {
             assert_eq!(buffer.len(), BUFFER_SIZE as usize);
-            for i in 0..buffer.len() {
-                buffer[i] = sign;
+            for sample in buffer.iter_mut() {
+                *sample = sign;
                 advance_state(&mut cycle, &mut sign, 1);
             }
         });
