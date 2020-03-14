@@ -15,7 +15,7 @@ use portaudio as pa;
 type Int = u64;
 
 /// Sample rate in frames per second.
-const SAMPLE_RATE: Int = 44_100;
+const SAMPLE_RATE: Int = 24_000;
 
 /// Frequency in cycles per second.
 const FREQ: Int = 400;
@@ -27,7 +27,7 @@ const MSECS: Int = 3000;
 /// Size of output buffer in frames. Less than 1024 is not
 /// recommended, as most audio interfaces will choke
 /// horribly.
-const BUFFER_SIZE: usize = 1024;
+const BUFFER_SIZE: usize = 16;
 
 /// Total number of frames to be sent.
 const FRAMES: usize = (SAMPLE_RATE * MSECS / 1000) as usize;

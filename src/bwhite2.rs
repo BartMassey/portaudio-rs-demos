@@ -22,10 +22,9 @@ const MSECS: usize = 3000;
 /// Two channels for stereo.
 const CHANNELS: usize = 2;
 
-/// Size of output buffer in frames. Less than 1024 frames
-/// is not recommended, as most audio interfaces will choke
-/// horribly.
-const BUFFER_SIZE: usize = 1024;
+/// Size of output buffer in frames. Adjust to get minimal
+/// underflow with minimal latency on your hardware. 
+const BUFFER_SIZE: usize = 1;
 
 /// Size of output table in frames. This is arbitrary,
 /// except that it should be at least as large as

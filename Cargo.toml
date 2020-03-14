@@ -33,6 +33,10 @@ path = "src/brecord.rs"
 name = "bfuzz"
 path = "src/bfuzz.rs"
 
+[[bin]]
+name = "bfuzzbox"
+path = "src/bfuzzbox.rs"
+
 [dependencies]
 portaudio = "0.7"
 rand = "0.5"
